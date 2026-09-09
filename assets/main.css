@@ -53,6 +53,30 @@ body {
 }
 .back-link:hover { color: var(--text); }
 
+.rung-picker {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.rung-picker label {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.rung-picker select {
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--text);
+  background: var(--card);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  padding: 6px 10px;
+  max-width: 100%;
+}
+
 .card {
   background: var(--card);
   border: 1px solid var(--border);
