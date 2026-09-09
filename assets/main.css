@@ -137,6 +137,48 @@ body {
   vertical-align: middle;
 }
 
+.joint-block {
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed var(--border-strong);
+}
+
+.lane-head {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+.joint-block .lane-head { color: var(--warn); }
+
+.lanes {
+  display: flex;
+  gap: 22px;
+}
+
+.lane {
+  flex: 1;
+  min-width: 0;
+}
+
+.lane + .lane {
+  border-left: 1px dashed var(--border);
+  padding-left: 22px;
+}
+
+@media (max-width: 560px) {
+  .lanes { flex-direction: column; gap: 14px; }
+  .lane + .lane {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px dashed var(--border);
+    padding-top: 14px;
+  }
+}
+
 .index-list {
   display: flex;
   flex-direction: column;
