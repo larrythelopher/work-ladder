@@ -12,36 +12,85 @@
   <a class="back-link" href="/">&larr; All businesses</a>
   <div class="page-head">
     <h1>Your Last Decade</h1>
-    <div class="meta">Lanes: Will / Dunc / Dan. First pass, built from the 13 Jul working session — not yet a full sequenced plan.</div>
+    <div class="meta">Longevity membership delivered with Duncan's Life Is Movement clinic. Path from a working portal to an early-adopter launch. Lanes: Will / Dunc / Dan.</div>
   </div>
 
-  <div class="card rung is-current">
+  <div class="card rung is-done">
     <div class="card-head">
-      <h3 class="rung-title">1 — Open items from the last working session</h3>
-      <span class="pill current">Current</span>
+      <h3 class="rung-title">0 — Portal built</h3>
+      <span class="pill done">Done</span>
     </div>
-    <div class="rung-summary">Pulled from the 13 Jul '26 meeting. The website punch list below hasn't been assigned an owner yet — flagged rather than guessed.</div>
-    <div class="joint-block">
-      <div class="lane-head">Unassigned — needs an owner</div>
-      <ul class="rung-tasks">
-        <li>Booking form: fix gender-selection opacity bug, change date format to "D MM YYYY", remove the "select membership" page, fix where the form's email notification goes</li>
-        <li>Payment page: fix "personalised" spelling (appears twice), consolidate the payment page and enquiry form into one flow</li>
-        <li>Chatbot / first client email: correct the content, add a "check your spam" note to the dashboard-prep splash page, rewrite the "thank you for your membership" email, fix the blood-test email firing on payment submission</li>
-        <li>Fix the broken dashboard link in client emails</li>
-        <li>Review and correct the welcome email content</li>
-        <li>Change the enquiry form button text to "Continue &rarr;"</li>
-      </ul>
-    </div>
+    <div class="rung-summary">The membership site and client portal are live (launched Oct 2025). Every component of the client journey exists — it just hasn't been run end-to-end and signed off.</div>
     <div class="lanes">
       <div class="lane">
         <div class="lane-head">Will</div>
         <ul class="rung-tasks">
-          <li>Complete the marketing proposal, ready for the next meeting</li>
+          <li>Marketing site live (GoDaddy domain, 123 Reg hosting)</li>
+          <li>Client portal built: enquiry form, payment page, membership signup</li>
+          <li>Blood-test ordering, client dashboard, and onboarding email sequence all wired</li>
         </ul>
       </div>
       <div class="lane">
         <div class="lane-head">Dunc</div>
-        <ul class="rung-tasks"><li class="placeholder">No items assigned yet.</li></ul>
+        <ul class="rung-tasks"><li class="placeholder">Life Is Movement clinic delivery already operating.</li></ul>
+      </div>
+      <div class="lane">
+        <div class="lane-head">Dan</div>
+        <ul class="rung-tasks"><li class="placeholder">Not active at this stage.</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card rung is-current">
+    <div class="card-head">
+      <h3 class="rung-title">1 — Complete the Calendly integration</h3>
+      <span class="pill current">Current</span>
+    </div>
+    <div class="rung-summary">A booking made through the YLD portal must land on one calendar that already knows about every other commitment, so no client can book a slot that is really taken.</div>
+    <div class="lanes">
+      <div class="lane">
+        <div class="lane-head">Will</div>
+        <ul class="rung-tasks">
+          <li>Wire Calendly into the portal booking flow so a portal booking creates a real calendar event</li>
+          <li>Conflict detection must cover all three: Duncan's Life Is Movement physio bookings, his YLD bookings in the physical clinic, and his YLD home visits</li>
+          <li>Settle the underlying model — one calendar with event types vs. connected calendars Calendly checks for conflicts</li>
+        </ul>
+      </div>
+      <div class="lane">
+        <div class="lane-head">Dunc</div>
+        <ul class="rung-tasks">
+          <li>Connect / share the Life Is Movement booking calendar so its events block YLD availability</li>
+        </ul>
+      </div>
+      <div class="lane">
+        <div class="lane-head">Dan</div>
+        <ul class="rung-tasks">
+          <li>Advise on how Calendly connects to the system YLD currently uses to book patients (call, 10 Sep)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card rung">
+    <div class="card-head">
+      <h3 class="rung-title">2 — Finalise the portal end-to-end</h3>
+      <span class="pill next">Next</span>
+    </div>
+    <div class="rung-summary">Will runs the entire client lifecycle himself, acting as both the back office and the client, and fixes everything that breaks or reads wrong.</div>
+    <div class="lanes">
+      <div class="lane">
+        <div class="lane-head">Will</div>
+        <ul class="rung-tasks">
+          <li>Walk the full journey: enquiry &rarr; payment &rarr; membership &rarr; blood test &rarr; dashboard &rarr; onboarding emails &rarr; first booking</li>
+          <li>Booking form: fix gender-selection opacity bug, change date format to "D MM YYYY", remove the "select membership" page, fix where the form's email notification goes (currently the developer)</li>
+          <li>Consolidate the payment page and enquiry form into one flow; fix "personalised" spelling (twice)</li>
+          <li>Client emails: rewrite "thank you for your membership", correct the first client email, add a "check your spam" note to the dashboard-prep splash, stop the blood-test email firing on payment submission, fix the broken dashboard link, review the welcome email content</li>
+          <li>Change the enquiry form button text to "Continue &rarr;"</li>
+        </ul>
+      </div>
+      <div class="lane">
+        <div class="lane-head">Dunc</div>
+        <ul class="rung-tasks"><li class="placeholder">Reviews the clinical and client-experience touchpoints once Will's first pass is done.</li></ul>
       </div>
       <div class="lane">
         <div class="lane-head">Dan</div>
@@ -52,11 +101,82 @@
 
   <div class="card rung">
     <div class="card-head">
-      <h3 class="rung-title">Beyond this rung</h3>
-      <span class="pill pending">Not built yet</span>
+      <h3 class="rung-title">3 — Early-adopter outreach</h3>
+      <span class="pill pending">Not started</span>
     </div>
-    <div class="rung-summary placeholder">
-      No broader sequenced growth plan exists for this business yet — only this one punch list. Worth a proper planning session with Dunc and Dan to build out the rest of the ladder.
+    <div class="rung-summary">Only once a client can go start-to-finish without hitting a snag. Approach warm contacts with the early-adopter offer.</div>
+    <div class="joint-block">
+      <div class="lane-head">Joint</div>
+      <ul class="rung-tasks">
+        <li>Each founder identifies personal contacts who fit the early-adopter profile and reaches out</li>
+      </ul>
+    </div>
+    <div class="lanes">
+      <div class="lane">
+        <div class="lane-head">Will</div>
+        <ul class="rung-tasks"><li class="placeholder">Named targets to be added when this rung is closer.</li></ul>
+      </div>
+      <div class="lane">
+        <div class="lane-head">Dunc</div>
+        <ul class="rung-tasks"><li class="placeholder">Named targets to be added when this rung is closer.</li></ul>
+      </div>
+      <div class="lane">
+        <div class="lane-head">Dan</div>
+        <ul class="rung-tasks"><li class="placeholder">Named targets to be added when this rung is closer.</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card rung">
+    <div class="card-head">
+      <h3 class="rung-title">4 — Marketing presentation</h3>
+      <span class="pill pending">Not started</span>
+    </div>
+    <div class="rung-summary">Will delivers the marketing presentation to Dunc and Dan — the proposal that has been owed since the 13 Jul meeting.</div>
+    <div class="lanes">
+      <div class="lane">
+        <div class="lane-head">Will</div>
+        <ul class="rung-tasks">
+          <li>Build and present the marketing plan for YLD</li>
+        </ul>
+      </div>
+      <div class="lane">
+        <div class="lane-head">Dunc</div>
+        <ul class="rung-tasks"><li class="placeholder">Audience — feedback and sign-off.</li></ul>
+      </div>
+      <div class="lane">
+        <div class="lane-head">Dan</div>
+        <ul class="rung-tasks"><li class="placeholder">Audience — feedback and sign-off.</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card rung">
+    <div class="card-head">
+      <h3 class="rung-title">5 — Roles and equity</h3>
+      <span class="pill pending">Destination</span>
+    </div>
+    <div class="rung-summary">With a working product, first users, and a marketing plan on the table, formalise who does what. Roles and ongoing time commitments set in line with each founder's equity stake.</div>
+    <div class="joint-block">
+      <div class="lane-head">Joint</div>
+      <ul class="rung-tasks">
+        <li>Agree each founder's role and standing weekly / monthly commitment</li>
+        <li>Align those commitments with the equity split</li>
+      </ul>
+    </div>
+    <div class="lanes">
+      <div class="lane">
+        <div class="lane-head">Will</div>
+        <ul class="rung-tasks"><li class="placeholder">Defined by the outcome of this conversation.</li></ul>
+      </div>
+      <div class="lane">
+        <div class="lane-head">Dunc</div>
+        <ul class="rung-tasks"><li class="placeholder">Defined by the outcome of this conversation.</li></ul>
+      </div>
+      <div class="lane">
+        <div class="lane-head">Dan</div>
+        <ul class="rung-tasks"><li class="placeholder">Defined by the outcome of this conversation.</li></ul>
+      </div>
     </div>
   </div>
 
