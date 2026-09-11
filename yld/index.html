@@ -45,14 +45,15 @@
       <h3 class="rung-title">1 — Complete the Calendly integration</h3>
       <span class="pill current">Current</span>
     </div>
-    <div class="rung-summary">A booking made through the YLD portal must land on one calendar that already knows about every other commitment, so no client can book a slot that is really taken. This is the gate to Stage 2 of the program — medical consultancy and blood-test results.</div>
+    <div class="rung-summary">A booking made through the YLD portal must land on one calendar that already knows about every other commitment, so no client can book a slot that is really taken. This is the gate to Stage 2 of the program — medical consultancy and blood-test results. Duncan's calendar is now wired in as a conflict source and tested working — what's left is availability, Dan's own calendar, and the pre-consultation questions.</div>
     <div class="lanes">
       <div class="lane">
         <div class="lane-head">Will</div>
         <ul class="rung-tasks">
-          <li>Wire Calendly into the portal booking flow so a portal booking creates a real calendar event</li>
-          <li>Conflict detection must cover all three: Duncan's physio bookings, his YLD clinic bookings, and his YLD home visits</li>
-          <li>Settle the underlying model — one calendar with event types vs. connected calendars Calendly checks for conflicts</li>
+          <li>Configure working-hours availability in Calendly — current gaps are too small for the 1-hour consultation minimum</li>
+          <li>Get Dan's own work calendar shared and toggled on as a conflict source</li>
+          <li>Roll the pre-consultation questions into the portal's application form once they land</li>
+          <li>Run a full test before the booking link goes live</li>
         </ul>
       </div>
       <div class="lane">
@@ -64,8 +65,7 @@
       <div class="lane">
         <div class="lane-head">Dan</div>
         <ul class="rung-tasks">
-          <li>Advise on how Calendly connects to the system YLD currently uses to book patients (call, 10 Sep)</li>
-          <li>Supply the pre-consultation questions (outstanding since 13 Jul)</li>
+          <li>Send the pre-consultation questions to Will, to be rolled into the application form rather than Calendly</li>
         </ul>
       </div>
     </div>
