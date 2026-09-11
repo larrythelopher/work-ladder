@@ -168,6 +168,20 @@ body {
   text-decoration-color: var(--border-strong);
 }
 
+.rung-tasks li.locked .task-check {
+  cursor: not-allowed;
+}
+
+.rung-tasks li.locked .task-check input[type="checkbox"] {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.rung-tasks li.locked .task-check span {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
 .owner {
   display: inline-block;
   font-size: 11px;

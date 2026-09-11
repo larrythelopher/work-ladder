@@ -82,6 +82,38 @@
     });
   }
 
+  // Locks a task's checkbox until another task (its data-task-id, referenced
+  // via data-depends on the locked item) is ticked. Cross-lane, same-rung use
+  // case: e.g. Dunc's review step waits on Will's portal run-through. Forces
+  // a locked box back to unchecked if its prerequisite gets un-ticked again,
+  // via a synthetic "change" event so it goes through the normal persist path.
+  function initDependencies(root) {
+    const idToBox = new Map();
+    root.querySelectorAll("[data-task-id]").forEach((li) => {
+      const box = li.querySelector("input[type='checkbox']");
+      if (box) idToBox.set(li.dataset.taskId, box);
+    });
+
+    root.querySelectorAll("[data-depends]").forEach((li) => {
+      const box = li.querySelector("input[type='checkbox']");
+      const depBox = idToBox.get(li.dataset.depends);
+      if (!box || !depBox) return;
+
+      function sync() {
+        const unlocked = depBox.checked;
+        box.disabled = !unlocked;
+        li.classList.toggle("locked", !unlocked);
+        if (!unlocked && box.checked) {
+          box.checked = false;
+          box.dispatchEvent(new Event("change"));
+        }
+      }
+
+      sync();
+      depBox.addEventListener("change", sync);
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     const cards = Array.from(document.querySelectorAll(".card.rung"));
     const rungs = cards
@@ -152,5 +184,7 @@
       const next = rungs.find((r) => r.number === rungNumber + 1);
       if (next) setSelected(next.number);
     });
+
+    initDependencies(document);
   });
 })();
