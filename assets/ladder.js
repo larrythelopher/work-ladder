@@ -96,11 +96,14 @@
 
     root.querySelectorAll("[data-depends]").forEach((li) => {
       const box = li.querySelector("input[type='checkbox']");
-      const depBox = idToBox.get(li.dataset.depends);
-      if (!box || !depBox) return;
+      // data-depends can list several task IDs separated by spaces — ALL of
+      // them have to be ticked before this one unlocks.
+      const depIds = li.dataset.depends.trim().split(/\s+/);
+      const depBoxes = depIds.map((id) => idToBox.get(id)).filter(Boolean);
+      if (!box || !depBoxes.length) return;
 
       function sync() {
-        const unlocked = depBox.checked;
+        const unlocked = depBoxes.every((d) => d.checked);
         box.disabled = !unlocked;
         li.classList.toggle("locked", !unlocked);
         if (!unlocked && box.checked) {
@@ -110,7 +113,7 @@
       }
 
       sync();
-      depBox.addEventListener("change", sync);
+      depBoxes.forEach((d) => d.addEventListener("change", sync));
     });
   }
 
