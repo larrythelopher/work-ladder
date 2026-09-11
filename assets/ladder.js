@@ -22,11 +22,18 @@
     return match ? parseInt(match[1], 10) : null;
   }
 
+  // A "rung" is one step number, which can be spread across more than one
+  // .card.rung element (e.g. two parallel cards — Will's disparate project
+  // and Sakina's — both labelled "1 — ..." and shown side by side in a
+  // .rung-pair). Everything below operates on the whole group of elements
+  // for a given number, not on a single card.
   function applyState(rungs, selected) {
-    rungs.forEach(({ el, number }) => {
-      el.classList.remove("is-done", "is-current");
-      if (number < selected) el.classList.add("is-done");
-      else if (number === selected) el.classList.add("is-current");
+    rungs.forEach(({ els, number }) => {
+      els.forEach((el) => {
+        el.classList.remove("is-done", "is-current");
+        if (number < selected) el.classList.add("is-done");
+        else if (number === selected) el.classList.add("is-current");
+      });
     });
   }
 
@@ -51,32 +58,36 @@
       }
     }
 
-    rungs.forEach(({ el, number }) => {
-      const items = Array.from(el.querySelectorAll(".rung-tasks li:not(.placeholder)"));
-      items.forEach((li, idx) => {
-        const itemKey = number + "-" + idx;
-        const hasStored = Object.prototype.hasOwnProperty.call(stored, itemKey);
-        const checked = hasStored ? !!stored[itemKey] : number < startingSelected;
+    rungs.forEach(({ els, number }) => {
+      let idx = 0;
+      els.forEach((el) => {
+        const items = Array.from(el.querySelectorAll(".rung-tasks li:not(.placeholder)"));
+        items.forEach((li) => {
+          const itemKey = number + "-" + idx;
+          idx++;
+          const hasStored = Object.prototype.hasOwnProperty.call(stored, itemKey);
+          const checked = hasStored ? !!stored[itemKey] : number < startingSelected;
 
-        const label = document.createElement("label");
-        label.className = "task-check";
-        const box = document.createElement("input");
-        box.type = "checkbox";
-        box.checked = checked;
-        const span = document.createElement("span");
-        span.innerHTML = li.innerHTML;
+          const label = document.createElement("label");
+          label.className = "task-check";
+          const box = document.createElement("input");
+          box.type = "checkbox";
+          box.checked = checked;
+          const span = document.createElement("span");
+          span.innerHTML = li.innerHTML;
 
-        li.innerHTML = "";
-        label.appendChild(box);
-        label.appendChild(span);
-        li.appendChild(label);
-        li.classList.toggle("checked", checked);
+          li.innerHTML = "";
+          label.appendChild(box);
+          label.appendChild(span);
+          li.appendChild(label);
+          li.classList.toggle("checked", checked);
 
-        box.addEventListener("change", function () {
-          stored[itemKey] = box.checked;
-          persist();
-          li.classList.toggle("checked", box.checked);
-          onToggle(number);
+          box.addEventListener("change", function () {
+            stored[itemKey] = box.checked;
+            persist();
+            li.classList.toggle("checked", box.checked);
+            onToggle(number);
+          });
         });
       });
     });
@@ -119,21 +130,28 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     const cards = Array.from(document.querySelectorAll(".card.rung"));
-    const rungs = cards
-      .map((el) => {
-        const titleEl = el.querySelector(".rung-title");
-        const number = titleEl ? parseRungNumber(titleEl.textContent) : null;
-        return number === null ? null : { el, number, title: titleEl.textContent.trim() };
-      })
-      .filter(Boolean)
-      .sort((a, b) => a.number - b.number);
+
+    // Group cards by rung number — usually one card per number, but a
+    // .rung-pair can put two (or more) side by side under the same number,
+    // e.g. Will's disparate project and Sakina's, running in parallel.
+    const byNumber = new Map();
+    cards.forEach((el) => {
+      const titleEl = el.querySelector(".rung-title");
+      const number = titleEl ? parseRungNumber(titleEl.textContent) : null;
+      if (number === null) return;
+      if (!byNumber.has(number)) {
+        byNumber.set(number, { number, title: titleEl.textContent.trim(), els: [] });
+      }
+      byNumber.get(number).els.push(el);
+    });
+    const rungs = Array.from(byNumber.values()).sort((a, b) => a.number - b.number);
 
     if (!rungs.length) return; // nothing numbered on this page — leave it alone
 
     const key = businessKey();
     const rungStorageKey = RUNG_PREFIX + key;
     const stored = parseInt(localStorage.getItem(rungStorageKey), 10);
-    const existingCurrent = rungs.find((r) => r.el.classList.contains("is-current"));
+    const existingCurrent = rungs.find((r) => r.els.some((el) => el.classList.contains("is-current")));
     let selected = !isNaN(stored) && rungs.some((r) => r.number === stored)
       ? stored
       : (existingCurrent ? existingCurrent.number : rungs[0].number);
@@ -180,9 +198,14 @@
       if (rungNumber !== selected) return;
       const rung = rungs.find((r) => r.number === rungNumber);
       if (!rung) return;
-      const boxes = rung.el.querySelectorAll(".rung-tasks li:not(.placeholder) input[type='checkbox']");
+      // Every card sharing this rung number has to be fully ticked — e.g.
+      // both Will's card and Sakina's parallel card — before it advances.
+      const boxes = rung.els.reduce(
+        (acc, el) => acc.concat(Array.from(el.querySelectorAll(".rung-tasks li:not(.placeholder) input[type='checkbox']"))),
+        []
+      );
       if (!boxes.length) return;
-      const allDone = Array.from(boxes).every((b) => b.checked);
+      const allDone = boxes.every((b) => b.checked);
       if (!allDone) return;
       const next = rungs.find((r) => r.number === rungNumber + 1);
       if (next) setSelected(next.number);

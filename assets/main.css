@@ -85,6 +85,25 @@ body {
   margin-bottom: 14px;
 }
 
+/* Two (or more) cards sharing one rung number — parallel, disparate work
+   happening at the same stage, each still its own owner + consulting lane.
+   The rung only advances once every card in the row is fully checked. */
+.rung-pair {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.rung-pair .card.rung {
+  flex: 1;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+@media (max-width: 560px) {
+  .rung-pair { flex-direction: column; }
+}
+
 .rung {
   border-left: 3px solid var(--border-strong);
   border-radius: 4px 10px 10px 4px;
