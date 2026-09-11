@@ -1,11 +1,14 @@
 // Shared across every business page (tbs/tfce/yld) — lets you pick which
 // rung you're actually on from a dropdown, and greys out + strikes through
-// everything before it. Not shared with the homepage (no rungs there).
+// everything before it. Also turns each rung's task list into checkboxes;
+// ticking off every item in your current rung auto-advances you to the next.
 //
 // Persistence is per-browser (localStorage), not synced — this is a personal
-// "where am I" marker, not a shared team state. Each viewer sets their own.
+// "where am I" marker and personal checklist, not shared team state. Each
+// viewer sets their own; nobody else sees your ticks.
 (function () {
-  const STORAGE_PREFIX = "workladder-rung-";
+  const RUNG_PREFIX = "workladder-rung-";
+  const CHECKS_PREFIX = "workladder-checks-";
 
   function businessKey() {
     // "/tbs/" -> "tbs". Falls back to the full path if it doesn't match the
@@ -27,6 +30,58 @@
     });
   }
 
+  // Turns every real task <li> (i.e. not a .placeholder filler line) into a
+  // checkbox. Items in rungs before the starting rung default to checked —
+  // rungs you've already passed are assumed done until told otherwise.
+  // Calls onToggle(rungNumber) whenever a box in that rung changes.
+  function initChecklists(rungs, key, startingSelected, onToggle) {
+    const storageKey = CHECKS_PREFIX + key;
+    let stored;
+    try {
+      stored = JSON.parse(localStorage.getItem(storageKey) || "{}");
+    } catch (e) {
+      stored = {};
+    }
+
+    function persist() {
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(stored));
+      } catch (e) {
+        // ignore — private browsing / storage blocked, checks just won't persist
+      }
+    }
+
+    rungs.forEach(({ el, number }) => {
+      const items = Array.from(el.querySelectorAll(".rung-tasks li:not(.placeholder)"));
+      items.forEach((li, idx) => {
+        const itemKey = number + "-" + idx;
+        const hasStored = Object.prototype.hasOwnProperty.call(stored, itemKey);
+        const checked = hasStored ? !!stored[itemKey] : number < startingSelected;
+
+        const label = document.createElement("label");
+        label.className = "task-check";
+        const box = document.createElement("input");
+        box.type = "checkbox";
+        box.checked = checked;
+        const span = document.createElement("span");
+        span.innerHTML = li.innerHTML;
+
+        li.innerHTML = "";
+        label.appendChild(box);
+        label.appendChild(span);
+        li.appendChild(label);
+        li.classList.toggle("checked", checked);
+
+        box.addEventListener("change", function () {
+          stored[itemKey] = box.checked;
+          persist();
+          li.classList.toggle("checked", box.checked);
+          onToggle(number);
+        });
+      });
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     const cards = Array.from(document.querySelectorAll(".card.rung"));
     const rungs = cards
@@ -40,12 +95,14 @@
 
     if (!rungs.length) return; // nothing numbered on this page — leave it alone
 
-    const storageKey = STORAGE_PREFIX + businessKey();
-    const stored = parseInt(localStorage.getItem(storageKey), 10);
+    const key = businessKey();
+    const rungStorageKey = RUNG_PREFIX + key;
+    const stored = parseInt(localStorage.getItem(rungStorageKey), 10);
     const existingCurrent = rungs.find((r) => r.el.classList.contains("is-current"));
     let selected = !isNaN(stored) && rungs.some((r) => r.number === stored)
       ? stored
       : (existingCurrent ? existingCurrent.number : rungs[0].number);
+    const startingSelected = selected;
 
     // Build the dropdown.
     const field = document.createElement("div");
@@ -70,10 +127,30 @@
 
     applyState(rungs, selected);
 
-    select.addEventListener("change", function () {
-      selected = parseInt(select.value, 10);
-      localStorage.setItem(storageKey, String(selected));
+    function setSelected(number) {
+      selected = number;
+      select.value = selected;
+      localStorage.setItem(rungStorageKey, String(selected));
       applyState(rungs, selected);
+    }
+
+    select.addEventListener("change", function () {
+      setSelected(parseInt(select.value, 10));
+    });
+
+    initChecklists(rungs, key, startingSelected, function (rungNumber) {
+      // Only auto-advance if the rung that just changed is the one you're
+      // currently on — ticking boxes on a future or past rung shouldn't
+      // yank you somewhere else.
+      if (rungNumber !== selected) return;
+      const rung = rungs.find((r) => r.number === rungNumber);
+      if (!rung) return;
+      const boxes = rung.el.querySelectorAll(".rung-tasks li:not(.placeholder) input[type='checkbox']");
+      if (!boxes.length) return;
+      const allDone = Array.from(boxes).every((b) => b.checked);
+      if (!allDone) return;
+      const next = rungs.find((r) => r.number === rungNumber + 1);
+      if (next) setSelected(next.number);
     });
   });
 })();

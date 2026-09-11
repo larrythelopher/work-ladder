@@ -148,6 +148,26 @@ body {
 
 .rung-tasks li { line-height: 1.45; }
 
+.task-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.task-check input[type="checkbox"] {
+  margin: 3px 0 0;
+  flex-shrink: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.rung-tasks li.checked .task-check span {
+  color: var(--text-muted);
+  text-decoration: line-through;
+  text-decoration-color: var(--border-strong);
+}
+
 .owner {
   display: inline-block;
   font-size: 11px;
