@@ -237,6 +237,18 @@ body {
   border-bottom: 1px dashed var(--border-strong);
 }
 
+/* A joint task sitting after .lanes instead of before it — the divider
+   flips to sit above it (separating it from the lanes) rather than below
+   (there's nothing left to separate it from). */
+.joint-block-trailing {
+  margin-bottom: 0;
+  margin-top: 14px;
+  padding-bottom: 0;
+  padding-top: 14px;
+  border-bottom: none;
+  border-top: 1px dashed var(--border-strong);
+}
+
 .lane-head {
   font-size: 11px;
   font-weight: 700;
