@@ -248,12 +248,6 @@ body {
 
 .joint-block .lane-head { color: var(--warn); }
 
-/* A joint task sitting above a .rung-pair, rather than nested inside a
-   single card — e.g. "meet and discuss" before two people's work on the
-   same rung number splits off into separate parallel cards. Uses .card
-   for the border/padding/spacing, this just recolours the label. */
-.rung-joint .lane-head { color: var(--warn); }
-
 .lanes {
   display: flex;
   gap: 22px;
