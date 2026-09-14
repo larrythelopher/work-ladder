@@ -131,6 +131,23 @@ body {
   flex-wrap: wrap;
 }
 
+/* Groups the status pill and the owner emoji(s) together as one right-hand
+   unit, so the title stays pinned left regardless of how many badges sit
+   on the right. */
+.card-head-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Who's actually driving this module — Will, Sakina, etc. Two owner spans
+   together (no extra markup needed) means a jointly-owned module, e.g.
+   a decision or meeting neither person owns alone. */
+.owner {
+  font-size: 17px;
+  line-height: 1;
+}
+
 .rung-title {
   font-family: var(--serif);
   font-size: 19px;
