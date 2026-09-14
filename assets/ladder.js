@@ -39,7 +39,11 @@
 
   // Turns every real task <li> (i.e. not a .placeholder filler line) into a
   // checkbox. Items in rungs before the starting rung default to checked —
-  // rungs you've already passed are assumed done until told otherwise.
+  // rungs you've already passed are assumed done until told otherwise. An
+  // item can also opt into always starting checked regardless of rung
+  // position via class="default-checked" — e.g. a lightweight "Sign off"
+  // task for whoever isn't the primary owner of a card, which reads as
+  // already-done unless someone actually unticks it.
   // Calls onToggle(rungNumber) whenever a box in that rung changes.
   function initChecklists(rungs, key, startingSelected, onToggle) {
     const storageKey = CHECKS_PREFIX + key;
@@ -66,7 +70,8 @@
           const itemKey = number + "-" + idx;
           idx++;
           const hasStored = Object.prototype.hasOwnProperty.call(stored, itemKey);
-          const checked = hasStored ? !!stored[itemKey] : number < startingSelected;
+          const defaultChecked = li.classList.contains("default-checked") || number < startingSelected;
+          const checked = hasStored ? !!stored[itemKey] : defaultChecked;
 
           const label = document.createElement("label");
           label.className = "task-check";
