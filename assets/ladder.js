@@ -1,11 +1,13 @@
-// Shared across every business page (tbs/tfce/yld) — lets you pick which
-// rung you're actually on from a dropdown, and greys out + strikes through
-// everything before it. Also turns each rung's task list into checkboxes;
-// ticking off every item in your current rung auto-advances you to the next.
+// Shared across every business page (tbs/tfce/yld) — turns each rung's task
+// list into checkboxes, and greys out + strikes through everything before
+// whichever rung is current. Ticking off every item in the current rung
+// auto-advances you to the next one (no manual picker — which rung is
+// "current" is driven entirely by hardcoded is-current in the HTML and by
+// auto-advance from there).
 //
 // Persistence is per-browser (localStorage), not synced — this is a personal
-// "where am I" marker and personal checklist, not shared team state. Each
-// viewer sets their own; nobody else sees your ticks.
+// checklist, not shared team state. Each viewer sets their own; nobody else
+// sees your ticks.
 (function () {
   const RUNG_PREFIX = "workladder-rung-";
   const CHECKS_PREFIX = "workladder-checks-";
@@ -162,39 +164,13 @@
       : (existingCurrent ? existingCurrent.number : rungs[0].number);
     const startingSelected = selected;
 
-    // Build the dropdown.
-    const field = document.createElement("div");
-    field.className = "rung-picker";
-    const label = document.createElement("label");
-    label.setAttribute("for", "rung-select");
-    label.textContent = "Which step are you actually on?";
-    const select = document.createElement("select");
-    select.id = "rung-select";
-    rungs.forEach(({ number, title }) => {
-      const opt = document.createElement("option");
-      opt.value = number;
-      opt.textContent = title;
-      select.appendChild(opt);
-    });
-    select.value = selected;
-    field.appendChild(label);
-    field.appendChild(select);
-
-    const pageHead = document.querySelector(".page-head");
-    if (pageHead) pageHead.appendChild(field);
-
     applyState(rungs, selected);
 
     function setSelected(number) {
       selected = number;
-      select.value = selected;
       localStorage.setItem(rungStorageKey, String(selected));
       applyState(rungs, selected);
     }
-
-    select.addEventListener("change", function () {
-      setSelected(parseInt(select.value, 10));
-    });
 
     initChecklists(rungs, key, startingSelected, function (rungNumber) {
       // Only auto-advance if the rung that just changed is the one you're
